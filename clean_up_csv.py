@@ -2,7 +2,7 @@ import pandas as pd
 
 # Input CSV file path
 original_csv_file = input("Enter the path to the CSV file: ")
-updated_csv_file = original_csv_file.split(".xlsx")[0] + "_cleaned.csv"
+updated_csv_file = original_csv_file.split(".csv")[0] + "_cleaned.csv"
 
 # Read the CSV file into a DataFrame
 df = pd.read_csv(original_csv_file)
@@ -26,7 +26,7 @@ department_replacements = {
     "Modern Lang/Cul": "Modern Language and Cultures",
     "Philosophy/Soci": "Philosophy and Social Sciences",
     "Photo - Fashion": "Photography and Fashion",
-    "Physical Sci": "Physical Sciences"
+    "Physical Sci": "Physical Sciences",
 }
 
 df["Department"] = df["Department"].replace(department_replacements)
