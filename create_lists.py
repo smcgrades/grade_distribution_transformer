@@ -1,48 +1,83 @@
-import pandas as pd
 import json
 
+# Load the JSON file
+input_file = '/Users/asarelcastellanos/Desktop/smc_grades/fall_2021_cleaned.json'
 
-# Function to extract unique values from a column and update a set
-def extract_and_update_unique_values(df, column_name, unique_set):
-    unique_values = df[column_name].unique()
-    unique_set.update(unique_values)
+with open(input_file, 'r') as file:
+    data = json.load(file)
 
+# Create a set to store unique instructor and course names
+unique_names = set()
 
-# Function to save a set to a JSON file
-def save_set_to_json(unique_set, output_file_name):
-    with open(output_file_name, 'w') as json_file:
-        json.dump(list(unique_set), json_file)
+# Iterate through the data and extract instructor and course names
+for entry in data:
+    instructor = entry.get("Instructor")
+    course = entry.get("Course")
 
+    if instructor and course:
+        unique_names.add((instructor, course))
 
-# Initialize an empty set to store unique courses across all files
-all_unique_courses = set()
-all_unique_instructors = set()
+# Convert the set of unique names into an array of objects
+unique_names_array = [{"Instructor": instructor, "Course": course} for instructor, course in unique_names]
 
-while True:
-    # Ask the user for the path to a CSV file or enter 'q' to quit
-    csv_file_path = input("Enter the path to a CSV file (or 'q' to quit): ")
+grouped_data = []
 
-    if csv_file_path.lower() == 'q':
-        break
+# Iterate through unique_names_array and find matching objects in data
+for unique_name in unique_names_array:
+    instructor = unique_name.get("Instructor")
+    course = unique_name.get("Course")
 
-    try:
-        # Read the CSV file into a pandas DataFrame
-        df = pd.read_csv(csv_file_path)
+    matching_objects = [entry for entry in data if
+                        entry.get("Instructor") == instructor and entry.get("Course") == course]
 
-        # Get unique courses and update the set
-        extract_and_update_unique_values(df, "Course", all_unique_courses)
-        extract_and_update_unique_values(df, "Instructor", all_unique_instructors)
+    grouped_data.append(matching_objects)
 
-        print(f"Unique courses and instructors from {csv_file_path} have been added.")
+final_grouped_data = []
 
+for unique_name in unique_names_array:
+    instructor = unique_name.get("Instructor")
+    course = unique_name.get("Course")
 
-    except FileNotFoundError:
-        print(f"File not found: {csv_file_path}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    matching_objects = [entry for entry in data if
+                        entry.get("Instructor") == instructor and entry.get("Course") == course]
 
-# Save the set of all unique courses to a JSON file
-save_set_to_json(all_unique_courses, "courses.json")
-save_set_to_json(all_unique_instructors, "instructors.json")
+    # Combine department, discipline, course, and instructor
+    combined_info = {
+        "Department": matching_objects[0].get("Department"),
+        "Discipline": matching_objects[0].get("Discipline"),
+        "Course": course,
+        "Instructor": instructor
+    }
 
-print("All unique courses and instructors have been saved to 'courses.json' and 'instructors.json.'")
+    # Create a list of sections
+    sections = []
+    for obj in matching_objects:
+        section_info = {
+            "Section": obj.get("Section"),
+            "A": obj.get("A"),
+            "B": obj.get("B"),
+            "C": obj.get("C"),
+            "D": obj.get("D"),
+            "F": obj.get("F"),
+            "P": obj.get("P"),
+            "NP": obj.get("NP"),
+            "IX": obj.get("IX"),
+            "SP": obj.get("SP"),
+            "W": obj.get("W"),
+            "EW": obj.get("EW"),
+            "TotalCount": obj.get("TotalCount")
+        }
+        sections.append(section_info)
+
+    combined_info["Sections"] = sections
+
+    final_grouped_data.append(combined_info)
+
+output_file = 'final.json'
+
+# Write the grouped data to a JSON file
+with open(output_file, 'w') as json_file:
+    json.dump(final_grouped_data, json_file, indent=4)
+
+print(f'Grouped data has been saved to JSON file "{output_file}"')
+
