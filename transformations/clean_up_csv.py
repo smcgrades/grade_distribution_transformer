@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def clean_up_csv(file_path):
     # Input CSV file path
     updated_csv_file = file_path.split(".csv")[0] + "_cleaned.csv"
@@ -19,7 +20,8 @@ def clean_up_csv(file_path):
 
     # Fill empty cells in specified columns with 0 and convert to numeric
     columns_to_convert_to_numeric = ["A", "B", "C", "D", "F", "P", "NP", "IX", "SP", "W", "EW", "TotalCount"]
-    df[columns_to_convert_to_numeric] = df[columns_to_convert_to_numeric].fillna(0).apply(pd.to_numeric, errors="coerce")
+    df[columns_to_convert_to_numeric] = df[columns_to_convert_to_numeric].fillna(0).apply(pd.to_numeric,
+                                                                                          errors="coerce")
 
     # Save the modified DataFrame to a new CSV file
     df.to_csv(updated_csv_file, index=False)

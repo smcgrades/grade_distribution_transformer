@@ -1,5 +1,5 @@
 import os
-from transformations import convert
+from transformations import convert, clean
 
 
 def collect_files(folder_path):
@@ -19,6 +19,7 @@ def run_transformations(file_paths):
     for file_path in file_paths:
         print(f"Running script on: {file_path}")
         csv_file_path = convert.xlsx_to_csv(file_path)
+        clean.csv(csv_file_path)
 
 
 def main():
