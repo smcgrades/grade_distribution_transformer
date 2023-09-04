@@ -1,4 +1,6 @@
 import pandas as pd
+import csv
+
 
 def csv(file_path):
     # New CSV file name
@@ -7,8 +9,16 @@ def csv(file_path):
     # Read the CSV file into the Dataframe
     df = pd.read_csv(file_path)
 
-    text_to_remove = "Fall 2021 Grade Distribution by Instructor"
+    # Remove rows where the 'Department' column has the specified value
+    df = df[df['Department'] != 'Fall 2021 Grade Distribution by Instructor']
 
-    filtered_df = df[~df.apply(lambda row: text_to_remove in row.to_string(), axis=1)]
-    filtered_df.to_csv(updated_csv_file, index=False)
-    print(f"Rows containing '{text_to_remove} has been removed.")
+    # Get the header as a list of column names
+    header = df.columns.tolist()
+
+    # Remove rows that are identical to the header
+    df = df[~df.apply(lambda row: row.tolist() == header, axis=1)]
+
+    # Save the updated DataFrame to a new CSV file
+    df.to_csv(updated_csv_file, index=False)
+
+    print(f"The first row has been removed. Output saved to '{updated_csv_file}'.")

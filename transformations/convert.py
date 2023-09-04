@@ -5,7 +5,7 @@ def xlsx_to_csv(file_path):
     print(f"Converting {file_path} into a csv file...")
     new_csv_file = file_path.split(".xlsx")[0] + ".csv"
     df = pd.read_excel(file_path)
-    df.to_csv(new_csv_file, index=False)
+    df.to_csv(new_csv_file, index=False, header=False)
     print(f"{file_path} converted to {new_csv_file}.")
     return new_csv_file
 
