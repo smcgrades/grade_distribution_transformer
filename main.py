@@ -1,5 +1,5 @@
 import os
-from transformations import convert_xlsx_to_csv
+from transformations import convert
 
 
 def collect_files(folder_path):
@@ -15,6 +15,12 @@ def collect_files(folder_path):
     return file_paths
 
 
+def run_transformations(file_paths):
+    for file_path in file_paths:
+        print(f"Running script on: {file_path}")
+        csv_file_path = convert.xlsx_to_csv(file_path)
+
+
 def main():
     print(f"----------------------------\nWelcome to the Pipeline!\n----------------------------")
     print("This python script transforms .xlsx files into usable csv files.")
@@ -28,7 +34,8 @@ def main():
     if confirm == 'No':
         print("Alright then, go ahead and make the changes the comeback and rerun the program.")
         exit(0)
-    print("Perfect! Continuing with script...")
+    print("Perfect! Let's start the script...")
+    run_transformations(file_paths)
 
 
 main()
