@@ -18,11 +18,22 @@ cd grade_distribution_transformer
 
 ## Using *Grade Distribution Transformer*
 To use *Grade Distribution Transformer* follow these steps:
-- Get the [SMC Grade Distribution PDFs](https://www.smc.edu/administration/institutional-research/grade-distribution.php) you want to trasnform.
+- Get the [SMC Grade Distribution PDFs](https://www.smc.edu/administration/institutional-research/grade-distribution.php) you want to transform.
 - Go to [CloudConvert](https://cloudconvert.com/) and transform those PDFs into `.xlsx` files.
 - Open the folder `grade_distribution_transformer` and create a `grades` folder.
 - Place those converted `.xlsx` files into the 'grades' folder.
 - Go to your IDE or terminal and run `python3 main.py` within the `grade_distribution_transformer` folder and follow the instructions.
+
+## Additional Info
+This script currently works for:
+- Fall 2020
+- Fall 2021
+- Spring 2021
+- Spring 2022
+
+## Future Features
+- Automate the process of converting PDFs into XLSX files using CloudConvert API.
+- Make the script for the rest of the grade distribution PDFs available.
 
 ## License
 Copyright &copy; 2023 Asarel Castellanos
