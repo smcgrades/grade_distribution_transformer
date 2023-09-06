@@ -1,5 +1,4 @@
 import os
-import glob
 
 
 def all_other_files(directory):
