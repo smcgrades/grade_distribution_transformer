@@ -23,6 +23,7 @@ def run_transformations(file_paths):
         create.lists(cleaned_csv_file_path)
         print(f"Finished script on: {file_path}\n")
 
+
 def main():
     remove.all_other_files("grades")
     print(f"----------------------------\nWelcome to the Pipeline!\n----------------------------")
