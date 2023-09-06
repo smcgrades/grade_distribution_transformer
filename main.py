@@ -17,29 +17,43 @@ def collect_files(folder_path):
 
 def run_transformations(file_paths):
     for file_path in file_paths:
-        print(f"Running script on: {file_path}")
+        print(f"Running transformation on: {file_path}")
         csv_file_path = convert.xlsx_to_csv(file_path)
         cleaned_csv_file_path = clean.csv(csv_file_path)
         create.lists(cleaned_csv_file_path)
-        print(f"Finished script on: {file_path}\n")
+        print(f"Finished transformation on: {file_path}\n")
 
 
 def main():
-    remove.all_other_files("grades")
+    directory:str
     print(f"----------------------------\nWelcome to the Pipeline!\n----------------------------")
     print("This python script transforms .xlsx files into usable csv files.")
     print("Read about how to prepare the environment for this script to work as intended in the README.md.")
-    file_paths = collect_files("grades")
-    print("\nRunning script....")
-    print("We found the following files in the 'grades' folder: ")
+    # This will come in a later feature.
+    # option = input("Would you like to provide your own folder or use the 'grades' folder provided?"
+    #                " (Type 'Own' or 'Grades'): ")
+    # if option == 'Own':
+    #     directory = input("Please provide the path to your directory here: ")
+    #     remove.all_other_files(directory)
+    # elif option == 'Grades':
+    #     directory = "grades"
+    #     remove.all_other_files("grades")
+    # else:
+    #     print("Please type 'Own' or 'Grades' (case sensitive).")
+    #     exit(0)
+    directory = "grades"
+    remove.all_other_files(directory)
+    file_paths = collect_files(directory)
+    print(f"\nWe found the following files in the {directory} folder: ")
     for file_path in file_paths:
         print(file_path)
     confirm = input("\nAre these the correct files? (Type 'Yes' or 'No'): ")
-    if confirm == 'No':
-        print("Alright then, go ahead and make the changes the comeback and rerun the program.")
+    if confirm == 'Yes':
+        print("Perfect! Let's start the script...\n")
+        run_transformations(file_paths)
+    elif confirm == 'No':
+        print("Go ahead and make the changes to your folder and rerun the program.")
         exit(0)
-    print("Perfect! Let's start the script...\n")
-    run_transformations(file_paths)
 
 
 main()
