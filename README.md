@@ -5,7 +5,6 @@ This tool was created to allow me to easily transform and upload the data into a
 ## Prerequisites
 Before you begin, ensure you have the following:
 - You have installed the latest version of [python](https://www.python.org/downloads/).
-- This script uses `pandas` and `openpyxl` so make sure to have those python packages installed as well.
 
 ## Installing *Grade Distribution Transformer*
 To install *Grade Distribution Transformer* follow the steps:
@@ -14,6 +13,21 @@ git clone https://github.com/smcgrades/grade_distribution_transformer.git
 ```
 ```bash
 cd grade_distribution_transformer
+```
+```bash
+python3 -m venv env
+```
+```bash
+source env/bin/activate
+```
+```bash
+source env/bin/activate
+```
+```bash
+pip install pandas
+```
+```bash
+pip install openpyxl
 ```
 
 ## Using *Grade Distribution Transformer*
