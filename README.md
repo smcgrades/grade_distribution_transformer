@@ -21,9 +21,6 @@ python3 -m venv env
 source env/bin/activate
 ```
 ```bash
-source env/bin/activate
-```
-```bash
 pip install pandas
 ```
 ```bash
@@ -42,8 +39,10 @@ To use *Grade Distribution Transformer* follow these steps:
 This script currently works for:
 - Fall 2020
 - Fall 2021
+- Fall 2022
 - Spring 2021
 - Spring 2022
+- Spring 2023
 
 ## Future Features
 - Automate the process of converting PDFs into XLSX files using CloudConvert API.
