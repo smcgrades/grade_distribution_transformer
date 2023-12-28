@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 
-def lists(file_path):
+def create_class_lists(file_path):
     complete_json_file = file_path.split("_cleaned.csv")[0] + ".json"
 
     df = pd.read_csv(file_path)

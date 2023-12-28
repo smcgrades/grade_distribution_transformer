@@ -57,7 +57,7 @@ departmentReplacements = {
 }
 
 
-def csv(file_path):
+def clean_csv(file_path):
     # New CSV file name
     updated_csv_file = file_path.split(".csv")[0] + "_cleaned.csv"
 
