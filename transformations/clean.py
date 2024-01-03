@@ -1,121 +1,34 @@
 import pandas as pd
+from fuzzywuzzy import process
 
-rowsToRemove = ['Fall 2020 Grade Distribution by Instructor', 'Fall 2021 Grade Distribution by Instructor',
-                'Spring 2021 Grade Distribution by Instructor', 'Spring 2022 Grade Distribution by Instructor',
-                'Fall 2022 Grade Distribution by Instructor', 'Spring 2023 Grade Distribution by Instructor']
-columnsToFill = ['Department', 'Discipline', 'Course']
-columnsToConvert = ["A", "B", "C", "D", "F", "P", "NP", "IX", "RD", "SP", "W", "EW", "Total"]
-departmentReplacements = {
-    "Communic": "Communication and Media Studies",
-    "Communication": "Communication and Media Studies",
-    "Communicatio": "Communication and Media Studies",
-    "CSIS": "Computer Science and Information Systems (CSIS)",
-    "Computer": "Computer Science and Information Systems (CSIS)",
-    "Computer Scie": "Computer Science and Information Systems (CSIS)",
-    "Cosmetolo": "Cosmetology",
-    "Design Tec": "Design Technology",
-    "Design Technolo": "Design Technology",
-    "Design Techno": "Design Technology",
-    "Disabled S": "Disabled Student Center",
-    "Disabl Stu Ctr": "Disabled Student Center",
-    "Disabled Stud": "Disabled Student Center",
-    "Earth Scien": "Earth Sciences",
-    "Earth Science": "Earth Sciences",
-    "Education/": "Education and Early Childhood",
-    "Education/ECE": "Education and Early Childhood",
-    "ESL": "English as a Second Language (ESL)",
-    "Health Scie": 'Health Sciences',
-    "Health Science": 'Health Sciences',
-    "Kinesiology": "Kinesiology and Athletics",
-    "Kinesiology and": "Kinesiology and Athletics",
-    "Kinesiology an": "Kinesiology and Athletics",
-    "Athletics": "Kinesiology and Athletics",
-    "Kinesiology": "Kinesiology and Athletics",
-    "Life Scienc": "Life Sciences",
-    "Life Science": "Life Sciences",
-    "Math": "Mathematics",
-    "Mathematic": "Mathematics",
-    "Modern La": "Modern Languages and Culture",
-    "Modern Lang/Cu": "Modern Languages and Culture",
-    "Modern Lang/Cul": "Modern Languages and Culture",
-    "Modern Lang/C": "Modern Languages and Culture",
-    "Modern Langu": "Modern Languages and Culture",
-    "Noncredit Educa": "Noncredit Education",
-    "Noncredit": "Noncredit Education",
-    "Noncredit Edu": "Noncredit Education",
-    "Philosophy": "Philosophy and Social Sciences",
-    "Philosophy/Soci": "Philosophy and Social Sciences",
-    "Philosophy/So": "Philosophy and Social Sciences",
-    "Philosophy an": "Philosophy and Social Sciences",
-    "Photo - Fashion": "Photography and Fashion",
-    "Photo - Fashio": "Photography and Fashion",
-    "Photograph": "Photography and Fashion",
-    "Photography a": "Photography and Fashion",
-    "Physical Sc": "Physical Sciences",
-    "Physical Sci": "Physical Sciences",
-    "Physical Scien": "Physical Sciences",
-}
+def find_best_match(word, correct_departments):
+    # Use process to find the best match with a similarity score
+    matches = process.extractOne(word, correct_departments)
 
+    # If a match is found and the similarity score is above a certain threshold (adjust as needed)
+    if matches and matches[1] > 80:
+        print(f"Found match for {word}: {matches[0]}")
+        return matches[0]
+    else:
+        print(f"No match found for {word}")
+        # If no matches are found or the similarity score is too low, handle it accordingly
+        return None
 
 def clean_csv(file_path):
-    # New CSV file name
+
     updated_csv_file = file_path.split(".csv")[0] + "_cleaned.csv"
 
-    # Read the CSV file into the Dataframe
+    correct_Department_columns = ['Art', 'Athletics and Kinesiology', 'Business', 'Communication and Media Studies', 'Computer Science and Information Systems (CSIS)', 'Cosmetology', 'Counseling', 'Dance', 'Design Technology', 'Disabled Student Center', 'Earth Science', 'Education and Early Childhood', 'English', 'ESL', 'Health Science', 'History', 'Library', 'Life Science', 'Mathematics', 'Modern Languages and Culture', 'Music', 'Noncredit Education', 'Philosophy and Social Science', 'Photography and Fashion', 'Physical Science', 'Psychology', 'Student Life', 'Theatre Arts']
+
+    # CSV in DataFrame
     df = pd.read_csv(file_path)
 
-    # Get the header as a list of column names
-    header = df.columns.tolist()
+    print(df.iloc[0,0])
 
-    # Remove rows that are identical to the header
-    df = df[~df.apply(lambda row: row.tolist() == header, axis=1)]
+    # # Rename department columns to their correct names
+    # for index, row in df.iterrows():
+    #     if pd.notnull(row['Department']):
+    #         correct_Department = find_best_match(row['Department'], correct_Department_columns)
+    #         df.at[index, 'Department'] = correct_Department
 
-    # Check if the first header column is not named 'Department' and rename it
-    if df.columns[0] != 'Department':
-        df.columns.values[0] = 'Department'
-
-    # Find IX in the header
-    if 'IX' in header:
-        ix_index = header.index("IX")
-
-        # Check if 'RD' is after 'IX'
-        if 'RD' not in df.columns[ix_index + 1:]:
-            # Add 'RD' after 'IX' in the DataFrame
-            df.insert(ix_index + 1, 'RD', None)
-
-            # Check if 'SP' two after IX
-            if 'SP' not in df.columns[ix_index + 2]:
-                # Add 'SP' after 'RD' in the DataFrame
-                df.insert(ix_index + 2, 'SP', None)
-
-    if 'RD' in header:
-        rd_index = header.index("RD")
-
-        # Check if 'SP' is after 'RD'
-        if 'SP' not in df.columns[rd_index + 1:]:
-            # Add 'SP' after 'RD' in the DataFrame
-            df.insert(rd_index + 1, 'SP', None)
-
-    # Check if the last header column is not named 'Total' and rename it
-    if df.columns[-1] != 'Total':
-        df.columns.values[-1] = 'Total'
-
-    df = df[~df['Department'].isin(rowsToRemove)]
-
-    # Replace all incorrect values in column 'Department'
-    df['Department'] = df['Department'].replace(departmentReplacements)
-
-    # Fill empty cells in certain columns with values from the cell above
-    df[columnsToFill] = df[columnsToFill].ffill()
-
-    # Remove extra spaces between words in the "Course" column
-    df["Course"] = df["Course"].str.replace(r'\s+', ' ', regex=True)
-
-    # Fill empty cells in certain columns with 0 and convert to numeric
-    df[columnsToConvert] = df[columnsToConvert].fillna(0).astype(float)
-
-    # Save the updated DataFrame to a new CSV file
     df.to_csv(updated_csv_file, index=False)
-
-    print(f"{file_path} has been cleaned to {updated_csv_file}!")
-    return updated_csv_file
