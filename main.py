@@ -3,7 +3,7 @@ from transformations import collect_files, delete_all_other_files, convert_xlsx_
 def run_transformations(file_path):
     print(f"Running transformation on: {file_path}")
     csv_file_path = convert_xlsx_to_csv(file_path)
-    # cleaned_csv_file_path = clean_csv(csv_file_path)
+    cleaned_csv_file_path = clean_csv(csv_file_path)
     # create_class_lists(cleaned_csv_file_path)
     # print(f"Finished transformation on: {file_path}\n")
 
