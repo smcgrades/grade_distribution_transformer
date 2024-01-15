@@ -1,15 +1,17 @@
 import os
 import pandas as pd
-no_header_files = ['fall_2016', 'fall_2017', 'fall_2018', 'spring_2017', 'spring_2018', 'spring-2019']
+no_header_files = ['fall_2016', 'fall_2017', 'fall_2018', 'spring_2017', 'spring_2018', 'spring_2019']
 
 def convert_xlsx_to_csv(file_path):
     file_without_extension = file_path.split("grades/")[1].split(".xlsx")[0]
-    print(file_without_extension)
     path = "grades/" + file_without_extension
     os.mkdir(path)
     new_csv_file = "grades/" + file_without_extension + "/" + file_without_extension + ".csv"
     df = pd.read_excel(file_path)
-    df.to_csv(new_csv_file, index=False, header=True)
+    if(file_without_extension in no_header_files):
+        df.to_csv(new_csv_file, index=False, header=True)
+    else:
+        df.to_csv(new_csv_file, index=False, header=False)
     print(f"{file_path} converted to {new_csv_file}!\n")
     return new_csv_file
 

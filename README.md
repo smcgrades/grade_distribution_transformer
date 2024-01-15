@@ -26,6 +26,9 @@ pip install pandas
 ```bash
 pip install openpyxl
 ```
+```bash
+pip install fuzzywuzzy
+```
 
 ## Using *Grade Distribution Transformer*
 To use *Grade Distribution Transformer* follow these steps:
