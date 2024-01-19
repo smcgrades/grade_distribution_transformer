@@ -1,7 +1,6 @@
 import os
 import pandas as pd
-no_header_files = ['fall_2016', 'fall_2017', 'fall_2018']
-# , 'spring_2017', 'spring_2018', 'spring_2019'
+no_header_files = ['fall_2016', 'fall_2017', 'fall_2018', 'spring_2017', 'spring_2019']
 
 def convert_xlsx_to_csv(file_path):
     file_without_extension = file_path.split("grades/")[1].split(".xlsx")[0]
