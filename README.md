@@ -51,16 +51,15 @@ python3 main.py
 
 - After the process is complete you should see folders for each `.xlsx` with the same name.
 
-    - *All `.xlsx` files follow the same format of `[semester]_[year].xlsx`; so folders should be the same.*
-
+  - *All `.xlsx` files follow the same format of `[semester]_[year].xlsx`; so folders should be the same.*
 - Within each folder should be three files:
 
-    - `[semester]_[year]_.csv`
-        - The csv file created from the original `.xlsx`.
-    - `[semester]_[year]_cleaned.csv`
-        - A new csv file where it has been cleaned.
-    - `[semester]_[year].json`
-        - The final `.json` file that has a list of all classes, no duplicates, and sections combined by their professor.
+  - `[semester]_[year]_.csv`
+    - The csv file created from the original `.xlsx`.
+  - `[semester]_[year]_cleaned.csv`
+    - A new csv file where it has been cleaned.
+  - `[semester]_[year].json`
+    - The final `.json` file that has a list of all classes, no duplicates, and sections combined by their professor.
 
 ## Additional Info
 
@@ -72,6 +71,7 @@ This script currently works for:
 - Fall 2020
 - Fall 2021
 - Fall 2022
+- Fall 2023
 - Spring 2017
 - Spring 2019
 - Spring 2021
