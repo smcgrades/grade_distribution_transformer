@@ -1,6 +1,6 @@
 # Grade Distribution Transformer
 
-*Grade Distribution Transformer* is a python script that transforms `.xlsx` files created from SMC's grade distribtuion PDFs into usuable `.csv` and `.json` files.
+*Grade Distribution Transformer* is a python script that transforms `.xlsx` files created from Santa Monica College's grade distribtuion PDFs into usuable `.csv` and `.json` files.
 This tool was created to allow me to easily transform and upload the data into a database.
 
 ## Prerequisites
